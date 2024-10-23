@@ -1,38 +1,45 @@
-const express = require('express');
-require('dotenv').config()
+const express = require("express");
+require("dotenv").config();
 const app = express();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { Movie, User } = require("./models");
+const mongoose = require("mongoose");
 
 const uri = process.env.MONGODB_URI;
 
 app.use(express.json());
 
-// app.post('/api/v1/products', (req, res) => {
-//   console.log(req.body);
-//   res.send(req.body)
-// })
-
-// // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
-async function run() {
+app.post("/api/v1/user", async (req, res) => {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db('admin').command({ ping: 1 });
-    console.log('Connected to MongoDB');
-    app.listen(3000, () => {
-      console.log('Server running on port 3000');
+    console.log(req.body);
+    const user = await User.create({
+      clerkId: "clerk_test123",
+      email: "test@example.com",
     });
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-}
-run().catch(console.dir);
+});
+
+// Add test route to verify connection
+app.get("/api/health", (req, res) => {
+  res.json({
+    server: "up",
+    database:
+      mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+    timestamp: new Date(),
+  });
+});
+
+mongoose.connect(uri).then(() => {
+  console.log("Connected!");
+  app.listen(3000, () => {
+    console.log("Server running on port 3000");
+  });
+
+}).catch ( () => {
+    console.log('Connection failed');
+  });
+
+
+

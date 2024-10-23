@@ -15,17 +15,6 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
   },
-  firstName: {
-    type: String,
-    trim: true,
-  },
-  lastName: {
-    type: String,
-    trim: true,
-  },
-  profileImage: {
-    type: String,
-  },
   favoriteMovies: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Movie'
