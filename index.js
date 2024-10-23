@@ -5,9 +5,12 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 
 const uri = process.env.MONGODB_URI;
 
-app.get('/', function (req, res) {
-    res.send('Hello World');
-});
+app.use(express.json());
+
+// app.post('/api/v1/products', (req, res) => {
+//   console.log(req.body);
+//   res.send(req.body)
+// })
 
 // // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
