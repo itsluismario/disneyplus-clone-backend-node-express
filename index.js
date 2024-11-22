@@ -1,3 +1,4 @@
+// index.js
 const express = require("express");
 require("dotenv").config();
 const app = express();
@@ -6,7 +7,17 @@ const mongoose = require("mongoose");
 
 const uri = process.env.MONGODB_URI;
 
+const userRoutes = require('./routes/user.routes');
+const movieRoutes = require('./routes/movie.routes');
+const favoriteRoutes = require('./routes/favorite.routes');
+
+// Middleware
 app.use(express.json());
+
+// Routes
+app.use('/api/users', userRoutes);
+app.use('/api/movies', movieRoutes);
+app.use('/api/favorites', favoriteRoutes);
 
 app.post("/api/v1/user", async (req, res) => {
   try {
@@ -21,16 +32,6 @@ app.post("/api/v1/user", async (req, res) => {
   }
 });
 
-// Add test route to verify connection
-app.get("/api/health", (req, res) => {
-  res.json({
-    server: "up",
-    database:
-      mongoose.connection.readyState === 1 ? "connected" : "disconnected",
-    timestamp: new Date(),
-  });
-});
-
 mongoose.connect(uri).then(() => {
   console.log("Connected!");
   app.listen(3000, () => {
@@ -40,6 +41,3 @@ mongoose.connect(uri).then(() => {
 }).catch ( () => {
     console.log('Connection failed');
   });
-
-
-
