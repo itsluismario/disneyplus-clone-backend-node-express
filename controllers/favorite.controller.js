@@ -1,4 +1,5 @@
 // controllers/favorite.controller.js
+
 const { Favorite, User, Movie } = require('../models');
 const mongoose = require('mongoose');
 
