@@ -1,9 +1,9 @@
 // src/controllers/movie.controller.js
-const { MovieService } = require('../services/movie.service.js');
+const { TMDBService } = require('../services/tmdb.service.js');
 
 class MovieController {
   constructor() {
-    this.movieService = new MovieService();
+    this.tmbdService = new TMDBService();
 
     // Bind all methods
     this.getAllMovies = this.getAllMovies.bind(this);
@@ -13,12 +13,18 @@ class MovieController {
 
   async getAllMovies(req, res) {
     try {
-      const pages = parseInt(req.query.pages) || 3;
-      const movies = await this.movieService.getAllMovies(pages);
+      const page = parseInt(req.query.page);
+      const movies = await this.tmbdService.getAllMovies(page);
 
       res.json({
         success: true,
-        data: movies
+        data: {
+          results: movies.results,
+          page: movies.page,
+          totalPages: movies.totalPages,
+          totalResults: movies.totalResults,
+          hasMore: movies.page < movies.totalPages
+        }
       });
     } catch (error) {
       console.error('Fetch error:', error);
@@ -33,6 +39,7 @@ class MovieController {
     try {
       const query = req.query.q;
       const page = parseInt(req.query.page) || 1;
+      const pageSize = parseInt(req.query.pageSize) || 20;
 
       if (!query) {
         return res.status(400).json({
@@ -41,7 +48,7 @@ class MovieController {
         });
       }
 
-      const results = await this.movieService.searchMovies(query, page);
+      const results = await this.tmbdService.searchMovies(query, page, pageSize);
       res.json({
         success: true,
         data: results
@@ -58,7 +65,7 @@ class MovieController {
   async getMovieById(req, res) {
     try {
       const movieId = req.params.id;
-      const movie = await this.movieService.getMovieById(movieId);
+      const movie = await this.tmbdService.getMovieById(movieId);
 
       if (!movie) {
         return res.status(404).json({

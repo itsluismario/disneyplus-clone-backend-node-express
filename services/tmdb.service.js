@@ -39,36 +39,30 @@ class TMDBService {
   }
 
   // Get all popular movies (multiple pages)
-  async getAllMovies(totalPages = 3) {
+  async getAllMovies(page) {
     try {
-      const allMovies = [];
-
-      // Fetch multiple pages in parallel
-      const promises = Array.from({ length: totalPages }, (_, i) =>
-        fetch(`${this.baseUrl}/movie/popular?language=en-US&page=${i + 1}`, {
+      const response = await fetch(
+        `${this.baseUrl}/movie/popular?language=en-US&page=${page}`,
+        {
           method: 'GET',
           headers: this.headers
-        })
+        }
       );
 
-      const responses = await Promise.all(promises);
-      const results = await Promise.all(
-        responses.map(async response => {
-          if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.status_message || 'Failed to fetch movies');
-          }
-          return response.json();
-        })
-      );
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.status_message || 'Failed to fetch movies');
+      }
 
-      results.forEach(data => {
-        allMovies.push(...data.results);
-      });
-
-      return this.formatMoviesList(allMovies);
+      const data = await response.json();
+      return {
+        results: this.formatMoviesList(data.results),
+        page: data.page,
+        totalPages: data.total_pages,
+        totalResults: data.total_results
+      };
     } catch (error) {
-      console.error('Error fetching all movies:', error);
+      console.error('Error fetching movies:', error);
       throw new Error('Failed to fetch movies');
     }
   }
