@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 const movieSchema = new mongoose.Schema({
-  tmdbId: {
+  movieId: {                    // Changed from tmdbId to movieId to match API
     type: Number,
     required: true,
     unique: true,
@@ -16,22 +16,30 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  posterPath: {
+  posterUrl: {                  // Changed from posterPath
     type: String,
   },
-  backdropPath: {
+  backdropUrl: {                // Changed from backdropPath
     type: String,
   },
   releaseDate: {
     type: Date,
   },
-  voteAverage: {
+  rating: {                     // Changed from voteAverage
+    type: Number,
+  },
+  popularity: {                 // Added new field
     type: Number,
   },
   genres: [{
     type: String,
   }],
-  // For caching purposes
+  runtime: {                    // Added new field
+    type: Number,
+  },
+  tagline: {                    // Added new field
+    type: String,
+  },
   lastUpdated: {
     type: Date,
     default: Date.now
@@ -40,9 +48,8 @@ const movieSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Add indexes for faster queries
-movieSchema.index({ tmdbId: 1 });
-movieSchema.index({ title: 'text' }); // Enables text search on titles
+movieSchema.index({ movieId: 1 });
+movieSchema.index({ title: 'text' });
 
 const Movie = mongoose.model('Movie', movieSchema);
 

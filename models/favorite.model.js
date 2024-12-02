@@ -8,8 +8,7 @@ const favoriteSchema = new mongoose.Schema({
     required: true
   },
   movieId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Movie',
+    type: Number,
     required: true
   },
   addedAt: {
@@ -20,7 +19,7 @@ const favoriteSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Compound index to ensure a user can't favorite the same movie twice
+// Updated compound index to use movieId as number
 favoriteSchema.index({ userId: 1, movieId: 1 }, { unique: true });
 
 const Favorite = mongoose.model('Favorite', favoriteSchema);
