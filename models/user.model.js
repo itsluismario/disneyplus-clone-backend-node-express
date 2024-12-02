@@ -2,11 +2,6 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  clerkId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   email: {
     type: String,
     required: true,
@@ -15,6 +10,7 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
   },
+  password: { type: String, require: true },
   favoriteMovies: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Movie'
