@@ -3,6 +3,8 @@ const express = require('express');
 const movieRouter = require('./movie.route');
 const authRouter = require('./auth.route');
 const favoritesRoutes = require('./favorites.route');
+const { requireAuth } = require('@clerk/express');
+const checkAuthMiddleware = require('../middleware/check-auth.middleware');
 
 const routerApi = (app) => {
   const router = express.Router();
@@ -10,10 +12,13 @@ const routerApi = (app) => {
   // Global prefix
   app.use('/api/v1', router);
 
-  // Routes
-  router.use('/movies', movieRouter);
+  // Public routes
   router.use('/auth', authRouter);
-  router.use('/favorites', favoritesRoutes);
+
+  // Protected routes - require authentication
+  router.use('/movies', checkAuthMiddleware, movieRouter);
+  router.use('/favorites', checkAuthMiddleware, favoritesRoutes);
+
 
   // Handle 404 for API routes
   router.use('*', (req, res) => {
