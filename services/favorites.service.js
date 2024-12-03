@@ -3,41 +3,46 @@ const Favorite = require('../models/favorite.model');
 const Movie = require('../models/movie.model');
 
 class FavoritesService {
-  async addFavorite(userId, movieData) {
-    try {
-      let movie = await Movie.findOne({ movieId: movieData.movieId });
+// services/favorites.service.js
+async addFavorite(userId, movieData) {
+  try {
 
-      if (!movie) {
-        movie = new Movie({
-          movieId: movieData.movieId,
-          title: movieData.title,
-          overview: movieData.overview,
-          posterUrl: movieData.posterUrl,
-          backdropUrl: movieData.backdropUrl,
-          releaseDate: movieData.releaseDate,
-          rating: movieData.rating,
-          popularity: movieData.popularity,
-          genres: movieData.genres,
-          runtime: movieData.runtime,
-          tagline: movieData.tagline
-        });
-        await movie.save();
-      }
+    const movieDataFormatted = {
+      id: movieData.id,        // Add this
+      movieId: movieData.id,   // Keep this
+      title: movieData.title,
+      overview: movieData.overview,
+      posterUrl: movieData.posterUrl,
+      backdropUrl: movieData.backdropUrl,
+      releaseDate: movieData.releaseDate,
+      rating: movieData.rating,
+      popularity: movieData.popularity,
+      genres: movieData.genres,
+      runtime: movieData.runtime,
+      tagline: movieData.tagline
+    };
 
-      const favorite = new Favorite({
-        userId: userId,
-        movieId: movieData.movieId
-      });
+    let movie = await Movie.findOne({ id: movieDataFormatted.id });
 
-      await favorite.save();
-      return { success: true, message: 'Movie added to favorites' };
-    } catch (error) {
-      if (error.code === 11000) {
-        return { success: false, message: 'Movie already in favorites' };
-      }
-      throw error;
+    if (!movie) {
+      movie = new Movie(movieDataFormatted);
+      await movie.save();
     }
+
+    const favorite = new Favorite({
+      userId: userId,
+      movieId: movieDataFormatted.id  // Use id consistently
+    });
+
+    await favorite.save();
+    return { success: true, message: 'Movie added to favorites' };
+  } catch (error) {
+    if (error.code === 11000) {
+      return { success: false, message: 'Movie already in favorites' };
+    }
+    throw error;
   }
+}
 
   async removeFavorite(userId, movieId) {
     try {
