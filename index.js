@@ -7,10 +7,11 @@ const routerApi = require("./routes/index");
 const cors = require("cors");
 
 const uri = process.env.MONGODB_URI;
+const frontend_uri = process.env.FRONTEND_URI;
 
 // CORS configuration
 const corsOptions = {
-  origin: 'http://localhost:4200',
+  origin: frontend_uri,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
   optionsSuccessStatus: 200 // Important for preflight requests
