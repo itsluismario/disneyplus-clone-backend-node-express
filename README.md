@@ -11,14 +11,9 @@ A Disney+ clone application built with Angular (frontend) and Node.js (backend).
 
 ## Demo
 <div align="center">
-  <iframe 
-    width="560" 
-    height="315" 
-    src="https://www.youtube.com/embed/OFRFZd5zni0" 
-    frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-    allowfullscreen>
-  </iframe>
+  <img src="./public//dpc.gif" alt="Disney+ Clone Demo GIF" width="100%"/>
+
+  ▶️ [Watch the complete demo on YouTube](https://youtu.be/OFRFZd5zni0)
 </div>
 
 ## Live Demo
@@ -142,3 +137,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Disney+ for inspiration
 - Angular team for the amazing framework
 - Node.js community for the robust backend environment
+
+
