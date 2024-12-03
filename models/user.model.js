@@ -2,15 +2,9 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    lowercase: true,
-    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
-  },
-  password: { type: String, require: true },
+  clerkId: { type: String, required: true, unique: true },
+  email: { type: String, required: true },
+  password: { type: String, required: true }, // Store hashed password
   favoriteMovies: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Movie'
@@ -20,10 +14,9 @@ const userSchema = new mongoose.Schema({
     default: Date.now
   }
 }, {
-  timestamps: true // Adds createdAt and updatedAt
+  timestamps: true
 });
 
-// Add index for faster queries
 userSchema.index({ clerkId: 1 });
 userSchema.index({ email: 1 });
 
