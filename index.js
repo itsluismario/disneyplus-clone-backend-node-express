@@ -8,6 +8,7 @@ const cors = require("cors");
 
 const uri = process.env.MONGODB_URI;
 const frontend_uri = process.env.FRONTEND_URI;
+const port = process.env.PORT || 3000;
 
 // CORS configuration
 const corsOptions = {
@@ -28,8 +29,8 @@ routerApi(app);
 
 mongoose.connect(uri).then(() => {
   console.log("Connected!");
-  app.listen(3000, () => {
-    console.log("Server running on port 3000");
+  app.listen(port, '0.0.0.0', () => {
+    console.log(`Server running on port ${port}`);
   });
 
 }).catch ( () => {
