@@ -9,6 +9,22 @@
 ## Description
 A Disney+ clone application built with Angular (frontend) and Node.js (backend). This project demonstrates modern web development practices with a focus on user authentication, content management, and streaming capabilities.
 
+## Demo
+<div align="center">
+  <iframe 
+    width="560" 
+    height="315" 
+    src="https://www.youtube.com/embed/OFRFZd5zni0" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+  </iframe>
+</div>
+
+## Live Demo
+- Frontend: [Disney+ Clone Frontend](https://disneyplus-clone-frontend-angular.vercel.app)
+- Backend API: [Disney+ Clone API](https://disneyplus-clone-backend-node-express-1.onrender.com)
+
 ## Related Repositories
 This project is split into two repositories:
 
